@@ -11,13 +11,13 @@ def question1():
         [14.2, -0.112, 12.2, -3.44],
         [0.0, 100.0, 99.9, 2.15],
         [15.3, -0.11, 13.1, -4.16]
-    ])
-    b = np.array([1.0, 2.0, 3.0, 4.0])  # 可自行改 b 值
+    ], dtype=float)
 
+    b = np.array([1.0, 2.0, 3.0, 4.0], dtype=float)
     n = len(b)
     Ab = np.hstack((A, b.reshape(-1, 1)))
 
-    # Gaussian elimination with partial pivoting
+    # Partial pivoting
     for i in range(n):
         max_row = np.argmax(np.abs(Ab[i:, i])) + i
         if max_row != i:
@@ -31,9 +31,10 @@ def question1():
     for i in range(n - 1, -1, -1):
         x[i] = (Ab[i, -1] - np.dot(Ab[i, i+1:n], x[i+1:n])) / Ab[i, i]
 
-    print("Q1: Solution using Gaussian Elimination with Pivoting")
+    print("Q1: Gaussian Elimination with Pivoting Result")
     for i, val in enumerate(x):
         print(f"x{i+1} = {val:.6f}")
+    print()
 
 # -------------------------
 # Q2. Matrix Inversion
@@ -45,12 +46,14 @@ def question2():
         [1, 3, 1, 0],
         [1, 1, 6, 2],
         [0, 0, 2, 5]
-    ])
+    ], dtype=float)
 
     A_inv = np.linalg.inv(A)
 
-    print("\nQ2: Inverse of matrix A")
-    print(A_inv)
+    print("Q2: Inverse of Matrix A")
+    for row in A_inv:
+        print("  ".join(f"{val: .6f}" for val in row))
+    print()
 
 # -------------------------
 # Q3. Crout Factorization for Tridiagonal Matrix
@@ -58,10 +61,10 @@ def question2():
 
 def question3():
     n = 4
-    a = np.array([0, 1, 1, 1])  # sub-diagonal (a[0] not used)
-    b = np.array([3, 3, 3, 3])  # diagonal
-    c = np.array([1, 1, 1, 0])  # super-diagonal (c[-1] not used)
-    d = np.array([2, 3, 4, 1])  # right-hand side
+    a = np.array([0, 1, 1, 1], dtype=float)  # sub-diagonal (a[0] unused)
+    b = np.array([3, 3, 3, 3], dtype=float)  # diagonal
+    c = np.array([1, 1, 1, 0], dtype=float)  # super-diagonal (c[-1] unused)
+    d = np.array([2, 3, 4, 1], dtype=float)  # RHS
 
     l = np.zeros(n)
     u = np.zeros(n - 1)
@@ -81,14 +84,15 @@ def question3():
     for i in range(1, n):
         y[i] = (d[i] - a[i] * y[i - 1]) / l[i]
 
-    # Back substitution
+    # Backward substitution
     x[-1] = y[-1]
     for i in range(n - 2, -1, -1):
         x[i] = y[i] - u[i] * x[i + 1]
 
-    print("\nQ3: Solution using Crout Factorization")
+    print("Q3: Crout Factorization Result")
     for i, val in enumerate(x):
         print(f"x{i+1} = {val:.6f}")
+    print()
 
 # -------------------------
 # Main Execution
